@@ -1,0 +1,98 @@
+Project Structure Overview
+=======================
+
+/app
+----
+_layout.tsx
+- Root layout component
+- Handles framework initialization
+- Sets up main Stack navigation
+
+/(tabs)
+  _layout.tsx
+  - Configures tab-based navigation
+  - Defines tab bar appearance and icons
+  
+  index.tsx
+  - Home screen component
+  - Displays welcome message and getting started guide
+  - Entry point for student profile creation
+  
+  profile.tsx
+  - Student profile management screen
+  - Shows academic information and preferences
+  - Allows profile updates
+  
+  universities.tsx
+  - University recommendations screen
+  - Displays matched universities based on profile
+  - Shows university details and match scores
+
+/components
+-----------
+Dropdown.tsx
+- Reusable dropdown selection component
+- Handles single option selection
+- Used for reason for studying selection
+
+MultiSelect.tsx
+- Reusable multi-selection component
+- Handles multiple option selection
+- Used for country and university preferences
+
+UniversityCard.tsx
+- Displays university information
+- Shows match percentage and requirements
+- Handles external website links
+
+/context
+--------
+StudentContext.tsx
+- Manages global student profile state
+- Provides context for student information
+- Handles form completion status
+
+/data
+-----
+formData.ts
+- Contains static data for form options
+- Lists of countries, universities, and study reasons
+
+universityData.ts
+- Mock university database
+- Contains detailed university information
+- Used for generating recommendations
+
+/hooks
+------
+useFrameworkReady.ts
+- Essential framework initialization hook
+- Required for proper app functionality
+
+/utils
+------
+recommendationLogic.ts
+- Implements university matching algorithm
+- Calculates match scores
+- Filters and sorts university recommendations
+
+Configuration Files
+------------------
+app.json
+- Expo application configuration
+- Defines app metadata and settings
+
+package.json
+- Project dependencies
+- Scripts for development and building
+
+tsconfig.json
+- TypeScript configuration
+- Path aliases and compiler options
+
+.prettierrc
+- Code formatting rules
+
+.npmrc
+- NPM configuration
+- Legacy peer dependencies setting
