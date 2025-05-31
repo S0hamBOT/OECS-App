@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,32 +12,45 @@ interface ResultsSectionProps {
 }
 
 const ResultsSection: React.FC<ResultsSectionProps> = ({ results, onStartOver, onBack }) => {
-  const [filter, setFilter] = useState<'all' | 'Safe' | 'Moderate' | 'Ambitious'>('all');
+  const [filter, setFilter] = useState<'all' | 'Dream' | 'Competitive' | 'Safe'>('all');
+
+  // Categorize universities based on ranking
+  const categorizeUniversity = (ranking: number): 'Dream' | 'Competitive' | 'Safe' => {
+    if (ranking >= 1 && ranking <= 40) return 'Dream';
+    if (ranking >= 41 && ranking <= 120) return 'Competitive';
+    return 'Safe'; // 121-200 and beyond
+  };
+
+  // Add category to universities
+  const universitiesWithCategories = results.universities.map(uni => ({
+    ...uni,
+    category: categorizeUniversity(uni.ranking)
+  }));
 
   const filteredUniversities = filter === 'all' 
-    ? results.universities 
-    : results.universities.filter(uni => uni.tier === filter);
+    ? universitiesWithCategories 
+    : universitiesWithCategories.filter(uni => uni.category === filter);
 
-  const getTierIcon = (tier: string) => {
-    switch (tier) {
+  const getTierIcon = (category: string) => {
+    switch (category) {
+      case 'Dream': return <Rocket className="w-4 h-4" />;
+      case 'Competitive': return <Trophy className="w-4 h-4" />;
       case 'Safe': return <Target className="w-4 h-4" />;
-      case 'Moderate': return <Trophy className="w-4 h-4" />;
-      case 'Ambitious': return <Rocket className="w-4 h-4" />;
       default: return null;
     }
   };
 
-  const getTierColor = (tier: string) => {
-    switch (tier) {
-      case 'Safe': return 'safe-tier';
-      case 'Moderate': return 'moderate-tier';
-      case 'Ambitious': return 'ambitious-tier';
+  const getTierColor = (category: string) => {
+    switch (category) {
+      case 'Dream': return 'bg-gradient-to-r from-red-500 to-pink-500 text-white';
+      case 'Competitive': return 'moderate-tier';
+      case 'Safe': return 'bg-gradient-to-r from-green-500 to-emerald-500 text-white';
       default: return 'bg-gray-500';
     }
   };
 
-  const getTierCount = (tier: 'Safe' | 'Moderate' | 'Ambitious') => {
-    return results.universities.filter(uni => uni.tier === tier).length;
+  const getCategoryCount = (category: 'Dream' | 'Competitive' | 'Safe') => {
+    return universitiesWithCategories.filter(uni => uni.category === category).length;
   };
 
   return (
@@ -69,7 +81,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, onStartOver, o
             </div>
           </div>
 
-          {/* Tier Summary */}
+          {/* Category Summary */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <Button
               variant={filter === 'all' ? 'default' : 'outline'}
@@ -83,38 +95,38 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, onStartOver, o
             </Button>
             
             <Button
-              variant={filter === 'Safe' ? 'default' : 'outline'}
-              onClick={() => setFilter('Safe')}
-              className="glass-card h-auto p-4 justify-start safe-tier"
+              variant={filter === 'Dream' ? 'default' : 'outline'}
+              onClick={() => setFilter('Dream')}
+              className="glass-card h-auto p-4 justify-start bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600"
             >
-              <Target className="w-5 h-5 mr-3" />
+              <Rocket className="w-5 h-5 mr-3" />
               <div className="text-left">
-                <div className="text-lg font-bold">{getTierCount('Safe')}</div>
-                <div className="text-sm">Safe Options</div>
+                <div className="text-lg font-bold">{getCategoryCount('Dream')}</div>
+                <div className="text-sm">Dream Universities</div>
               </div>
             </Button>
             
             <Button
-              variant={filter === 'Moderate' ? 'default' : 'outline'}
-              onClick={() => setFilter('Moderate')}
+              variant={filter === 'Competitive' ? 'default' : 'outline'}
+              onClick={() => setFilter('Competitive')}
               className="glass-card h-auto p-4 justify-start moderate-tier"
             >
               <Trophy className="w-5 h-5 mr-3" />
               <div className="text-left">
-                <div className="text-lg font-bold">{getTierCount('Moderate')}</div>
-                <div className="text-sm">Moderate Reach</div>
+                <div className="text-lg font-bold">{getCategoryCount('Competitive')}</div>
+                <div className="text-sm">Competitive Universities</div>
               </div>
             </Button>
             
             <Button
-              variant={filter === 'Ambitious' ? 'default' : 'outline'}
-              onClick={() => setFilter('Ambitious')}
-              className="glass-card h-auto p-4 justify-start ambitious-tier"
+              variant={filter === 'Safe' ? 'default' : 'outline'}
+              onClick={() => setFilter('Safe')}
+              className="glass-card h-auto p-4 justify-start bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600"
             >
-              <Rocket className="w-5 h-5 mr-3" />
+              <Target className="w-5 h-5 mr-3" />
               <div className="text-left">
-                <div className="text-lg font-bold">{getTierCount('Ambitious')}</div>
-                <div className="text-sm">Ambitious Goals</div>
+                <div className="text-lg font-bold">{getCategoryCount('Safe')}</div>
+                <div className="text-sm">Safe Universities</div>
               </div>
             </Button>
           </div>
@@ -129,9 +141,9 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, onStartOver, o
                   <div className="flex-1">
                     <CardTitle className="text-xl mb-2 flex items-center gap-3">
                       <span>{university.name}</span>
-                      <Badge className={`${getTierColor(university.tier!)} text-xs`}>
-                        {getTierIcon(university.tier!)}
-                        <span className="ml-1">{university.tier}</span>
+                      <Badge className={`${getTierColor(university.category)} text-xs`}>
+                        {getTierIcon(university.category)}
+                        <span className="ml-1">{university.category}</span>
                       </Badge>
                     </CardTitle>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
