@@ -24,7 +24,7 @@ export const calculateNormalizedScore = (gre: number, ielts: number, cgpa: numbe
   const normalizedIELTS = normalizeIELTS(ielts);
   const normalizedCGPA = normalizeCGPA(cgpa);
   
-  const finalScore = 0.5 * normalizedGRE + 0.3 * normalizedIELTS + 0.2 * normalizedCGPA;
+  const finalScore = (0.5 * normalizedGRE) + (0.3 * normalizedIELTS) + (0.2 * normalizedCGPA);
   
   return {
     normalizedGRE,
