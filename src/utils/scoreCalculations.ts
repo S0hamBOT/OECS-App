@@ -2,8 +2,8 @@
 import { ScoreNormalization, SearchResults, University } from '../types';
 
 // Score normalization functions (0-100 scale)
-const normalizeGRE = (gre: number): number => ((gre - 260) / (340 - 260)) * 100;
-const normalizeIELTS = (ielts: number): number => ((ielts - 0) / (9 - 0)) * 100;
+const normalizeGRE = (gre: number): number => (gre / 340) * 100;
+const normalizeIELTS = (ielts: number): number => ((ielts / 9) * 100;
 const normalizeCGPA = (cgpa: number): number => (cgpa / 10) * 100;
 
 // Country mapping for API compatibility
