@@ -77,17 +77,17 @@ export const searchUniversities = async (gre: number, ielts: number, cgpa: numbe
       throw new Error('No universities found for your criteria. Try adjusting your scores or selecting a different country.');
     }
     
-    // Calculate tiers for each university
+    // Calculate tiers for each university - map API fields to our interface
     const universitiesWithTiers: University[] = data.results.colleges.map((uni: any) => ({
-      name: uni.name,
-      country: uni.country,
-      ranking: uni.ranking,
-      website: uni.website,
-      minGRE: uni.minGRE,
-      minIELTS: uni.minIELTS,
-      minCGPA: uni.minCGPA,
-      normalizedScore: uni.normalizedScore,
-      tier: calculateTier(scoreNormalization.finalScore, uni.normalizedScore)
+      name: uni['Institution Name'] || uni.name || 'Unknown University',
+      country: uni.Location || uni.country || fullCountryName,
+      ranking: uni['2025 RANK'] || uni.ranking || 999,
+      website: uni['University Page Link'] || uni.website || '#',
+      minGRE: uni.MinGRE || uni.minGRE || 0,
+      minIELTS: uni.MinIELTS || uni.minIELTS || 0,
+      minCGPA: uni.MinCGPA || uni.minCGPA || 0,
+      normalizedScore: uni['Overall_Normalised_Score'] || uni.normalizedScore || 0,
+      tier: calculateTier(scoreNormalization.finalScore, uni['Overall_Normalised_Score'] || uni.normalizedScore || 0)
     }));
     
     // Sort by ranking
