@@ -1,73 +1,52 @@
-# Welcome to your Lovable project
+# University Finder API
 
-## Project info
+A smart little API that helps students find universities they qualify for; based on GRE, IELTS, and CGPA scores. Built with Node.js + Express and a sprinkle of logic magic.
 
-**URL**: https://lovable.dev/projects/cbbda48b-5512-430c-a2a7-8d22724a7b05
+Check it out: [https://universityfinder.sohamjadhav.in](https://universityfinder.sohamjadhav.in)
 
-## How can I edit this code?
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## How It Works
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/cbbda48b-5512-430c-a2a7-8d22724a7b05) and start prompting.
+1. Normalize your scores to a 0–100 scale  
+2. Calculate a weighted score:  
+   `50% GRE + 30% IELTS + 20% CGPA`  
+3. Match universities in your target country  
+4. Return results sorted by ranking
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+##  API Endpoints
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### `POST /find-colleges`
+Send your country + score, get matching universities.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```json
+{
+  "country": "USA",
+  "score": 87.3
+}
 ```
 
-**Edit a file directly in GitHub**
+### `GET /health`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Checks if the API is alive 
 
-**Use GitHub Codespaces**
+### `GET /stats`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Stats about the current dataset 
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## Live API
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+> [https://college-api-0qgk.onrender.com](https://college-api-0qgk.onrender.com)
 
-## How can I deploy this project?
+Try it out with Postman, cURL, or your browser.
 
-Simply open [Lovable](https://lovable.dev/projects/cbbda48b-5512-430c-a2a7-8d22724a7b05) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+Made with <3
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+;)
